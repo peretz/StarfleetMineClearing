@@ -11,6 +11,7 @@ int main(int argc, char*argv[])
     else
     {
         Field field(argv[1]);
+        field.print();
 
 //        std::cout << "Script file; " << argv[2] << std::endl;
     }
