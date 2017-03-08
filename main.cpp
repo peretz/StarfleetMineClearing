@@ -1,6 +1,6 @@
+#include "Field.h"
 #include <iostream>
 #include <fstream>
-#include <string>
 
 int main(int argc, char*argv[])
 {
@@ -10,23 +10,7 @@ int main(int argc, char*argv[])
     }
     else
     {
-        std::cout << "Field file; " << argv[1] << std::endl;
-        std::string line;
-        std::ifstream fieldFile(argv[1]);
-        if (fieldFile.is_open())
-        {
-            while(getline(fieldFile,line))
-            {
-                for(int i = 0; i < line.size(); ++i)
-                {
-                    std::cout << line[i] <<  "/";
-                }
-                std::cout << std::endl;
-            }
-            
-            fieldFile.close();
-        }
-
+        Field field(argv[1]);
 
 //        std::cout << "Script file; " << argv[2] << std::endl;
     }
