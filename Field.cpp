@@ -24,20 +24,6 @@ Field::Field(const std::string& fileName)
     }
 }
 
-void Field::print()
-{
-    const int ySize = grid.size();
-    const int xSize = grid[0].size();
-    for(int i = 0; i < ySize; ++i)
-    {
-        for(int j = 0; j < xSize; ++j)
-        {
-            std::cout << mapDepthToDisplayChar(grid[i][j]);
-        }
-        std::cout << std::endl;
-    }
-}
-
 void Field::dropView()
 {
     const int ySize = grid.size();
@@ -54,7 +40,7 @@ void Field::dropView()
     }
 }
 
-int Field::mapDisplayCharToDepth(char value)
+int Field::mapDisplayCharToDepth(char value) const
 {
     if (value == '.')
     { 
@@ -76,7 +62,7 @@ int Field::mapDisplayCharToDepth(char value)
     }
 }
 
-char Field::mapDepthToDisplayChar(int value)
+char Field::mapDepthToDisplayChar(int value) const
 {
     if (value == mineEmptyCell)
     {
@@ -96,4 +82,19 @@ char Field::mapDepthToDisplayChar(int value)
         assert(!value);
         return '*';
     }
+}
+
+std::ostream& operator<<(std::ostream &os, const Field& field)
+{
+    const int ySize = field.grid.size();
+    const int xSize = field.grid[0].size();
+    for(int i = 0; i < ySize; ++i)
+    {
+        for(int j = 0; j < xSize; ++j)
+        {
+            os << field.mapDepthToDisplayChar(field.grid[i][j]);
+        }
+        os << std::endl;
+    }
+    return os;
 }

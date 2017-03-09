@@ -20,13 +20,13 @@ class Field
 
         Field(const std::string& fileName);
 
-        void print();
         void dropView();
 
     private:
+        friend std::ostream& operator<<(std::ostream &os, const Field& field);
         std::vector<std::vector<int> > grid;
 
     private:
-        int mapDisplayCharToDepth(char value); 
-        char mapDepthToDisplayChar(int value); 
+        int mapDisplayCharToDepth(char value) const; 
+        char mapDepthToDisplayChar(int value) const; 
 };

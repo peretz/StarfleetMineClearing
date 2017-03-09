@@ -13,11 +13,9 @@ int main(int argc, char*argv[])
         Field field(argv[1]);
         char step = 'N';
         do {
-            field.print();
-            std::cout << std::endl;
+            std::cout << field << std::endl;
             field.dropView();
-            field.print();
-            std::cout << std::endl;
+            std::cout << field << std::endl;
 
             std::cout << "Should we continue (Y/N)?" << std::endl;
             std::cin >> step;
