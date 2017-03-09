@@ -8,7 +8,13 @@ class Script
     public:
         Script(const std::string& fileName);
 
-        bool nextLine(std::queue<std::string>& instructionQueue);
+        std::string getLine();
+
+        std::queue<std::string> parseInstructions();
+
+        void nextLine();
+
+        bool ended();
 
     private:
         std::queue<std::string> lineQueue;

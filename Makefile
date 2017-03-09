@@ -1,2 +1,2 @@
-make: source/main.cpp source/Field.cpp source/Script.cpp
-	clang++ -o smc.out source/main.cpp source/Field.cpp source/Script.cpp -I ./
+make: source/main.cpp source/Field.cpp source/Script.cpp source/Simulation.cpp
+	clang++ -o smc.out source/main.cpp source/Field.cpp source/Script.cpp source/Simulation.cpp -I ./

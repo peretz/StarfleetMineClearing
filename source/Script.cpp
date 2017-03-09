@@ -17,13 +17,16 @@ Script::Script(const std::string& fileName)
     }
 }
 
-bool Script::nextLine(std::queue<std::string>& instructionQueue)
+std::string Script::getLine()
 {
-    if (lineQueue.empty()) return false;
+    return lineQueue.front();
+}
 
+std::queue<std::string> Script::parseInstructions()
+{
     std::string activeLine = lineQueue.front();
-    lineQueue.pop();
 
+    std::queue<std::string> instructionQueue;
     std::istringstream is(activeLine);
     std::string instruction;
     while(is >> instruction)
@@ -31,6 +34,18 @@ bool Script::nextLine(std::queue<std::string>& instructionQueue)
         instructionQueue.push(instruction);
     }
 
-    return true;
+    return instructionQueue;
 }
 
+void Script::nextLine()
+{
+    if (!ended())
+    {
+        lineQueue.pop();
+    }
+}
+
+bool Script::ended()
+{
+    return lineQueue.empty();
+}

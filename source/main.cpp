@@ -1,5 +1,4 @@
-#include "Field.h"
-#include "Script.h"
+#include "Simulation.h"
 #include <iostream>
 #include <fstream>
 
@@ -11,32 +10,8 @@ int main(int argc, char*argv[])
     }
     else
     {
-        Field field(argv[1]);
-        Script script(argv[2]);
-
-        char step = 'N';
-        std::queue<std::string> instr;
-        while(script.nextLine(instr))
-        {
-//            std::cout << field << std::endl;
-//            field.dropView();
-//            std::cout << field << std::endl;
-
-            if (instr.empty())
-            {
-                std::cout << std::endl;
-            }
-            else
-            {
-                while (!instr.empty())
-                {
-                    std::cout << instr.front() << std::endl;
-                    instr.pop();
-                }
-            }
-        }
-
-//        std::cout << "Script file; " << argv[2] << std::endl;
+        Simulation simulation(argv[1], argv[2]);
+        simulation.run();
     }
 
     return 0;
