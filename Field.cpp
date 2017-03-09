@@ -46,7 +46,7 @@ void Field::dropView()
     {
         for(int j = 0; j < xSize; ++j)
         {
-            if (grid[i][j] > 0)
+            if (grid[i][j] >= mineClosest)
             {
                --grid[i][j];
             }
@@ -58,10 +58,7 @@ int Field::mapDisplayCharToDepth(char value)
 {
     if (value == '.')
     { 
-        // Using -2 so there is a gap between 0 and -2
-        // and we can assert if the grid drops again
-        // after reaching '*', which is 0.
-        return -2;
+        return mineEmptyCell;
     }
     else if ((value >= 'a') && (value <= 'z'))
     {
@@ -81,15 +78,15 @@ int Field::mapDisplayCharToDepth(char value)
 
 char Field::mapDepthToDisplayChar(int value)
 {
-    if (value == -2)
+    if (value == mineEmptyCell)
     {
         return '.';
     }
-    else if ((value >= 1) && (value <= 26))
+    else if ((value >= mineClosest) && (value <= 26))
     {
         return (value + 'a') - 1;
     }
-    else if ((value >= 27) && (value <= 52))
+    else if ((value >= 27) && (value <= mineFarthest))
     {
         return (value + 'A') - 27;
     }
