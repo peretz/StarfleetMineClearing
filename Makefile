@@ -1,2 +1,2 @@
-make: main.cpp Field.cpp
-	clang++ -o smc.out main.cpp Field.cpp -I ./
+make: source/main.cpp source/Field.cpp
+	clang++ -o smc.out source/main.cpp source/Field.cpp -I ./
