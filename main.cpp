@@ -11,7 +11,17 @@ int main(int argc, char*argv[])
     else
     {
         Field field(argv[1]);
-        field.print();
+        char step = 'N';
+        do {
+            field.print();
+            std::cout << std::endl;
+            field.dropView();
+            field.print();
+            std::cout << std::endl;
+
+            std::cout << "Should we continue (Y/N)?" << std::endl;
+            std::cin >> step;
+        } while (step == 'Y');
 
 //        std::cout << "Script file; " << argv[2] << std::endl;
     }

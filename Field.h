@@ -9,6 +9,7 @@ class Field
         Field(const std::string& fileName);
 
         void print();
+        void dropView();
 
     private:
         std::vector<std::vector<int> > grid;

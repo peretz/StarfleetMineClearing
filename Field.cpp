@@ -38,11 +38,30 @@ void Field::print()
     }
 }
 
+void Field::dropView()
+{
+    const int ySize = grid.size();
+    const int xSize = grid[0].size();
+    for(int i = 0; i < ySize; ++i)
+    {
+        for(int j = 0; j < xSize; ++j)
+        {
+            if (grid[i][j] > 0)
+            {
+               --grid[i][j];
+            }
+        }
+    }
+}
+
 int Field::mapDisplayCharToDepth(char value)
 {
     if (value == '.')
-    {
-        return 0;
+    { 
+        // Using -2 so there is a gap between 0 and -2
+        // and we can assert if the grid drops again
+        // after reaching '*', which is 0.
+        return -2;
     }
     else if ((value >= 'a') && (value <= 'z'))
     {
@@ -52,19 +71,17 @@ int Field::mapDisplayCharToDepth(char value)
     {
         return (value - 'A') + 27;
     }
-    else if (value == '*')
-    {
-        return -1;
-    }
     else
     {
-        assert(false);
+        // std::cout << "mapDisplayCharToDepth: " << value << std::endl;
+        assert(value == '*');
+        return 0;
     }
 }
 
 char Field::mapDepthToDisplayChar(int value)
 {
-    if (value == 0)
+    if (value == -2)
     {
         return '.';
     }
@@ -76,12 +93,10 @@ char Field::mapDepthToDisplayChar(int value)
     {
         return (value + 'A') - 27;
     }
-    else if (value == -1)
+    else 
     {
+        // std::cout << "mapDepthToDisplayChar: " << value << std::endl;
+        assert(!value);
         return '*';
-    }
-    else
-    {
-        assert(false);
     }
 }
