@@ -75,16 +75,35 @@ void Simulation::step(Coordinate& vessel)
         }
         else if (currentInstruction == "alpha")
         {
+            // (-1, -1), (-1, 1), (1, -1), (1, 1)
+            field.clearCoordinate(vessel.x-1, vessel.y+1);
+            field.clearCoordinate(vessel.x-1, vessel.y-1);
+            field.clearCoordinate(vessel.x+1, vessel.y+1);
+            field.clearCoordinate(vessel.x+1, vessel.y-1);
         }
         else if (currentInstruction == "beta")
         {
+            // (-1, 0), (0, -1), (0, 1), (1, 0)
+            field.clearCoordinate(vessel.x-1, vessel.y);
+            field.clearCoordinate(vessel.x, vessel.y+1);
+            field.clearCoordinate(vessel.x, vessel.y-1);
+            field.clearCoordinate(vessel.x+1, vessel.y);
         }
         else if (currentInstruction == "gamma")
         {
+            // (-1, 0), (0, 0), (1, 0)
+            field.clearCoordinate(vessel.x-1, vessel.y);
+            field.clearCoordinate(vessel.x, vessel.y);
+            field.clearCoordinate(vessel.x+1, vessel.y);
         }
         else 
         { 
             assert(currentInstruction == "delta");
+
+            // (0, -1), (0, 0), (0, 1)
+            field.clearCoordinate(vessel.x, vessel.y+1);
+            field.clearCoordinate(vessel.x, vessel.y);
+            field.clearCoordinate(vessel.x, vessel.y-1);
         }
 
         //executeInstruction(currentInstuction);

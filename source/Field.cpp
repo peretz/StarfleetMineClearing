@@ -35,6 +35,11 @@ Coordinate Field::getCenter()
     return temp;
 }
 
+void Field::clearCoordinate(int x, int y)
+{
+    grid[y][x] = mapDisplayCharToDepth('.');
+}
+
 void Field::dropView()
 {
     const int ySize = grid.size();

@@ -17,6 +17,8 @@ class Field
 
         Coordinate getCenter();
 
+        void clearCoordinate(int x, int y);
+
         void dropView();
 
     private:
