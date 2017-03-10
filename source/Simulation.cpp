@@ -32,11 +32,10 @@ void Simulation::run()
         std::cout << script.getLine() << std::endl;
         std::cout << std::endl;
 
-        // @TODO: Add logic to update field
+        // Execute one step of the simulation
         step(vessel);
 
         // The resultant field
-        field.dropView();
         std::cout << printView(vessel, field);
         std::cout << std::endl;
 
@@ -105,7 +104,7 @@ void Simulation::step(Coordinate& vessel)
             field.clearCoordinate(vessel.x, vessel.y);
             field.clearCoordinate(vessel.x, vessel.y-1);
         }
-
-        //executeInstruction(currentInstuction);
     }
+
+    field.dropView();
 }
