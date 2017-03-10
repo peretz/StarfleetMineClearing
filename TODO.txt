@@ -1,0 +1,6 @@
+This file lists several tasks that are still pending.
+
+-> Add error handling to the program: The program uses files, arithmetic and objects that are not exception free. There is error handling still needed.
+-> In several places, object are returned as a copy. This is time consuming so we could leverage move semantics.
+-> The only tests executed in the program are functional tests. We can reorganize the classes so that we inject dependency and mock/unit test classes.
+
