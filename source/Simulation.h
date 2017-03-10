@@ -16,6 +16,14 @@ class Simulation
         void run();
 
     private:
+
+        Coordinate Vessel;
+
         Field field;
         Script script;
+
+    private:
+        void step();
+
+//        int score();
 };

@@ -84,17 +84,34 @@ char Field::mapDepthToDisplayChar(int value) const
     }
 }
 
-std::ostream& operator<<(std::ostream &os, const Field& field)
+//std::ostream& operator<<(std::ostream &os, const Field& field)
+//{
+//    const int ySize = field.grid.size();
+//    const int xSize = field.grid[0].size();
+//    for(int i = 0; i < ySize; ++i)
+//    {
+//        for(int j = 0; j < xSize; ++j)
+//        {
+//            os << field.mapDepthToDisplayChar(field.grid[i][j]);
+//        }
+//        os << std::endl;
+//    }
+//    return os;
+//}
+
+std::string printView(const Coordinate& coordinate, const Field& field)
 {
+    std::string os;
+
     const int ySize = field.grid.size();
     const int xSize = field.grid[0].size();
     for(int i = 0; i < ySize; ++i)
     {
         for(int j = 0; j < xSize; ++j)
         {
-            os << field.mapDepthToDisplayChar(field.grid[i][j]);
+            os += field.mapDepthToDisplayChar(field.grid[i][j]);
         }
-        os << std::endl;
+        os += '\n';
     }
     return os;
 }

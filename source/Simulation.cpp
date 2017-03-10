@@ -15,6 +15,7 @@ Simulation::Simulation
 void Simulation::run()
 {
     int stepCount = 1;
+    Coordinate coordinate = {0, 0};
     std::queue<std::string> instr;
     while(!script.ended())
     {
@@ -23,7 +24,7 @@ void Simulation::run()
         std::cout << std::endl;
 
         // The current minefield
-        std::cout << field << std::endl;
+        std::cout << printView(coordinate, field);
         std::cout << std::endl;
 
         // The current instruction
@@ -33,10 +34,11 @@ void Simulation::run()
         // @TODO: Add logic to update field
         // Move vessel
         // Shoot field
+        step();
 
         // The resultant field
         field.dropView();
-        std::cout << field << std::endl;
+        std::cout << printView(coordinate, field);
         std::cout << std::endl;
 
         script.nextLine();
@@ -46,16 +48,15 @@ void Simulation::run()
     // Ouput pass/fail message
 }
 
-//        if (instr.empty())
-//        {
-//            std::cout << std::endl;
-//        }
-//        else
-//        {
-//            while (!instr.empty())
-//            {
-//                std::cout << instr.front() << std::endl;
-//                instr.pop();
-//            }
-//        }
+void Simulation::step()
+{
+    std::queue<std::string> instructions = script.parseInstructions();
+    
+    while (!instructions.empty())
+    {
+        std::string currentInstuction = instructions.front();
+        instructions.pop();
 
+        //executeInstruction(currentInstuction);
+    }
+}
