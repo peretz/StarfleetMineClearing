@@ -9,7 +9,10 @@ Simulation::Simulation
     const std::string& scriptFileName
 ):
     field(fieldFileName),
-    script(scriptFileName)
+    script(scriptFileName),
+    numberOfVolleysFired(0),
+    numberOfMoves(0),
+    initialNumberOfMines(field.getNumberOfMines())
 {
 }
 
@@ -45,6 +48,82 @@ void Simulation::run()
         fieldStatus = field.getStatus();
     }
 
+    printResult(fieldStatus);
+}
+
+void Simulation::step(Coordinate& vessel)
+{
+    std::queue<std::string> instructions = script.parseInstructions();
+    
+    while (!instructions.empty())
+    {
+        // @TODO: Add logic for convert characters to lower case.
+        std::string currentInstruction = instructions.front();
+        instructions.pop();
+
+        if (currentInstruction == "north")
+        {
+            vessel.y--;
+            numberOfMoves++;
+        }
+        else if (currentInstruction == "south")
+        {
+            vessel.y++;
+            numberOfMoves++;
+        }
+        else if (currentInstruction == "east")
+        {
+            vessel.x++;
+            numberOfMoves++;
+        }
+        else if (currentInstruction == "west")
+        {
+            vessel.x--;
+            numberOfMoves++;
+        }
+        else if (currentInstruction == "alpha")
+        {
+            // (-1, -1), (-1, 1), (1, -1), (1, 1)
+            field.clearCoordinate(vessel.x-1, vessel.y+1);
+            field.clearCoordinate(vessel.x-1, vessel.y-1);
+            field.clearCoordinate(vessel.x+1, vessel.y+1);
+            field.clearCoordinate(vessel.x+1, vessel.y-1);
+            numberOfVolleysFired++;
+        }
+        else if (currentInstruction == "beta")
+        {
+            // (-1, 0), (0, -1), (0, 1), (1, 0)
+            field.clearCoordinate(vessel.x-1, vessel.y);
+            field.clearCoordinate(vessel.x, vessel.y+1);
+            field.clearCoordinate(vessel.x, vessel.y-1);
+            field.clearCoordinate(vessel.x+1, vessel.y);
+            numberOfVolleysFired++;
+        }
+        else if (currentInstruction == "gamma")
+        {
+            // (-1, 0), (0, 0), (1, 0)
+            field.clearCoordinate(vessel.x-1, vessel.y);
+            field.clearCoordinate(vessel.x, vessel.y);
+            field.clearCoordinate(vessel.x+1, vessel.y);
+            numberOfVolleysFired++;
+        }
+        else 
+        { 
+            assert(currentInstruction == "delta");
+
+            // (0, -1), (0, 0), (0, 1)
+            field.clearCoordinate(vessel.x, vessel.y+1);
+            field.clearCoordinate(vessel.x, vessel.y);
+            field.clearCoordinate(vessel.x, vessel.y-1);
+            numberOfVolleysFired++;
+        }
+    }
+
+    field.dropView();
+}
+
+void Simulation::printResult(Field::FieldStatus fieldStatus)
+{
     if 
     (
         (fieldStatus == Field::fieldStatusMineMissed) ||
@@ -61,70 +140,15 @@ void Simulation::run()
     {
         assert((fieldStatus == Field::fieldStatusNoMines) && (script.ended()));
 
-        std::cout << "pass (bonues points)" << std::endl;
+        std::cout << "pass (" << score() << ")" << std::endl;
     }
 
 }
 
-void Simulation::step(Coordinate& vessel)
+int Simulation::score()
 {
-    std::queue<std::string> instructions = script.parseInstructions();
-    
-    while (!instructions.empty())
-    {
-        // @TODO: Add logic for convert characters to lower case.
-        std::string currentInstruction = instructions.front();
-        instructions.pop();
-
-        if (currentInstruction == "north")
-        {
-            vessel.y--;
-        }
-        else if (currentInstruction == "south")
-        {
-            vessel.y++;
-        }
-        else if (currentInstruction == "east")
-        {
-            vessel.x++;
-        }
-        else if (currentInstruction == "west")
-        {
-            vessel.x--;
-        }
-        else if (currentInstruction == "alpha")
-        {
-            // (-1, -1), (-1, 1), (1, -1), (1, 1)
-            field.clearCoordinate(vessel.x-1, vessel.y+1);
-            field.clearCoordinate(vessel.x-1, vessel.y-1);
-            field.clearCoordinate(vessel.x+1, vessel.y+1);
-            field.clearCoordinate(vessel.x+1, vessel.y-1);
-        }
-        else if (currentInstruction == "beta")
-        {
-            // (-1, 0), (0, -1), (0, 1), (1, 0)
-            field.clearCoordinate(vessel.x-1, vessel.y);
-            field.clearCoordinate(vessel.x, vessel.y+1);
-            field.clearCoordinate(vessel.x, vessel.y-1);
-            field.clearCoordinate(vessel.x+1, vessel.y);
-        }
-        else if (currentInstruction == "gamma")
-        {
-            // (-1, 0), (0, 0), (1, 0)
-            field.clearCoordinate(vessel.x-1, vessel.y);
-            field.clearCoordinate(vessel.x, vessel.y);
-            field.clearCoordinate(vessel.x+1, vessel.y);
-        }
-        else 
-        { 
-            assert(currentInstruction == "delta");
-
-            // (0, -1), (0, 0), (0, 1)
-            field.clearCoordinate(vessel.x, vessel.y+1);
-            field.clearCoordinate(vessel.x, vessel.y);
-            field.clearCoordinate(vessel.x, vessel.y-1);
-        }
-    }
-
-    field.dropView();
+    const int adjustsedNumOfVolleysScore = std::min(5*numberOfVolleysFired, 5*initialNumberOfMines);
+    const int adjustedNumOfMovesScore = std::min(2*numberOfMoves, 3*initialNumberOfMines);
+    return (10 * initialNumberOfMines - adjustsedNumOfVolleysScore - adjustedNumOfMovesScore);
 }
+

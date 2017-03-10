@@ -25,6 +25,8 @@ class Field
 
         Coordinate getCenter();
 
+        int getNumberOfMines();
+
         void clearCoordinate(int x, int y);
 
         void dropView();
@@ -44,6 +46,7 @@ class Field
         };
 
         FieldStatus fieldStatus;
+        int numberOfMines;
 
         std::vector<std::vector<int> > grid;
 

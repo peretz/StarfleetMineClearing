@@ -6,7 +6,8 @@
 #include <stdlib.h>
 
 Field::Field(const std::string& fileName):
-    fieldStatus(fieldStatusNoMines)
+    fieldStatus(fieldStatusNoMines),
+    numberOfMines(0)
 {
     std::string line;
     std::ifstream fieldFile(fileName);
@@ -36,6 +37,11 @@ Coordinate Field::getCenter()
     temp.x = static_cast<int>(grid[0].size() / 2);
 
     return temp;
+}
+
+int Field::getNumberOfMines()
+{
+    return numberOfMines;
 }
 
 void Field::clearCoordinate(int x, int y)
@@ -113,6 +119,7 @@ char Field::mapDepthToDisplayChar(int value) const
 void Field::updateFieldStatus()
 {
     fieldStatus = fieldStatusNoMines;
+    numberOfMines = 0;
 
     const int ySize = grid.size();
     const int xSize = grid[0].size();
@@ -134,6 +141,7 @@ void Field::updateFieldStatus()
             if (grid[y][x] >= mineClosest && grid[y][x] <= mineFarthest)
             {
                 fieldStatus = fieldStatusMined;
+                numberOfMines++;
             }
         }
     }

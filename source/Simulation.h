@@ -20,8 +20,12 @@ class Simulation
         Field field;
         Script script;
 
+        int numberOfVolleysFired;
+        int numberOfMoves;
+        const int initialNumberOfMines;
+
     private:
         void step(Coordinate& vessel);
-
-//        int score();
+        void printResult(Field::FieldStatus fieldStatus);
+        int score();
 };
