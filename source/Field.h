@@ -32,7 +32,7 @@ class Field
         };
 
         friend std::string printView(const Coordinate& coordinate, const Field& field);
-        //friend std::ostream& operator<<(std::ostream &os, const Field& field);
+
         std::vector<std::vector<int> > grid;
 
     private:
