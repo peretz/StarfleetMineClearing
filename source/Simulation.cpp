@@ -40,8 +40,9 @@ void Simulation::run()
         // The resultant field
         std::cout << printView(vessel, field);
         std::cout << std::endl;
-
+        
         script.nextLine();
+        fieldStatus = field.getStatus();
     }
 
     if 
