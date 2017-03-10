@@ -15,7 +15,7 @@ Simulation::Simulation
 void Simulation::run()
 {
     int stepCount = 1;
-    Coordinate coordinate = {0, 0};
+    Coordinate coordinate = {-1, -1};
     std::queue<std::string> instr;
     while(!script.ended())
     {

@@ -2,6 +2,8 @@
 #include <fstream>
 #include <iostream>
 #include <assert.h>
+#include <algorithm>
+#include <stdlib.h>
 
 Field::Field(const std::string& fileName)
 {
@@ -78,7 +80,7 @@ char Field::mapDepthToDisplayChar(int value) const
     }
     else 
     {
-        // std::cout << "mapDepthToDisplayChar: " << value << std::endl;
+        std::cout << "mapDepthToDisplayChar: " << value << std::endl;
         assert(!value);
         return '*';
     }
@@ -86,7 +88,51 @@ char Field::mapDepthToDisplayChar(int value) const
 
 std::string printView(const Coordinate& coordinate, const Field& field)
 {
+    int xMaxDelta = 0;
+    int yMaxDelta = 0;
+
+    const int ySize = field.grid.size();
+    const int xSize = field.grid[0].size();
+    for(int y = 0; y < ySize; ++y)
+    {
+        for(int x = 0; x < xSize; ++x)
+        {
+            if (field.grid[y][x] >= Field::mineClosest)
+            {
+                const int tempX = abs(x - coordinate.x);
+                xMaxDelta = std::max(xMaxDelta, tempX);
+
+                const int tempY = abs(y - coordinate.y);
+                yMaxDelta = std::max(yMaxDelta, tempY);
+            }
+        }
+    }
+
+    const int yViewOrigin = coordinate.y - yMaxDelta;
+    const int xViewOrigin = coordinate.x - xMaxDelta;
+    const int yViewEnd = coordinate.y + yMaxDelta;
+    const int xViewEnd = coordinate.x + xMaxDelta;
+
     std::string os;
+    for(int i = yViewOrigin; i <= yViewEnd; ++i)
+    {
+        for(int j = xViewOrigin; j <= xViewEnd; ++j)
+        {
+            if ((i < 0 || i >= ySize) || (j < 0 || j >= xSize))
+            {
+                os += '.';
+            }
+            else
+            {
+                os += field.mapDepthToDisplayChar(field.grid[i][j]); 
+            }
+        }
+        os += '\n';
+    }
+
+    return os;
+
+/*    std::string os;
 
     const int ySize = field.grid.size();
     const int xSize = field.grid[0].size();
@@ -98,5 +144,5 @@ std::string printView(const Coordinate& coordinate, const Field& field)
         }
         os += '\n';
     }
-    return os;
+    return os;*/
 }
