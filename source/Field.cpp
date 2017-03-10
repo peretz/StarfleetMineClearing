@@ -46,7 +46,12 @@ int Field::getNumberOfMines()
 
 void Field::clearCoordinate(int x, int y)
 {
-    grid[y][x] = mapDisplayCharToDepth('.');
+    const int ySize = grid.size();
+    const int xSize = grid[0].size();
+    if ((y >= 0 && y < ySize) && (x >= 0 && x < xSize))
+    {
+        grid[y][x] = mapDisplayCharToDepth('.');
+    }
 }
 
 void Field::dropView()
