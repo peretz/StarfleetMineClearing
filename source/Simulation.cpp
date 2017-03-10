@@ -67,11 +67,11 @@ void Simulation::step(Coordinate& vessel)
         }
         else if (currentInstruction == "east")
         {
-            vessel.x--;
+            vessel.x++;
         }
         else if (currentInstruction == "west")
         {
-            vessel.x++;
+            vessel.x--;
         }
         else if (currentInstruction == "alpha")
         {
