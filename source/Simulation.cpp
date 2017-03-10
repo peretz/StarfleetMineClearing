@@ -18,7 +18,9 @@ void Simulation::run()
     int stepCount = 1;
     Coordinate vessel = field.getCenter();
     std::queue<std::string> instr;
-    while(!script.ended())
+
+    Field::FieldStatus fieldStatus = field.getStatus();
+    while(!script.ended() && fieldStatus == Field::fieldStatusMined)
     {
         // Step <x>
         std::cout << "Step " << stepCount++ << std::endl;
@@ -42,8 +44,25 @@ void Simulation::run()
         script.nextLine();
     }
 
-    // @TODO:
-    // Ouput pass/fail message
+    if 
+    (
+        (fieldStatus == Field::fieldStatusMineMissed) ||
+        ((fieldStatus == Field::fieldStatusMined) && script.ended())
+    )
+    {
+        std::cout << "fail (0)" << std::endl;
+    }
+    else if( (fieldStatus == Field::fieldStatusNoMines) && (!script.ended()) )
+    {
+        std::cout << "pass (1)" << std::endl;
+    }
+    else
+    {
+        assert((fieldStatus == Field::fieldStatusNoMines) && (script.ended()));
+
+        std::cout << "pass (bonues points)" << std::endl;
+    }
+
 }
 
 void Simulation::step(Coordinate& vessel)

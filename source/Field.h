@@ -13,6 +13,14 @@ struct Coordinate
 class Field
 {
     public:
+        
+        enum FieldStatus
+        {
+            fieldStatusMined,
+            fieldStatusMineMissed,
+            fieldStatusNoMines
+        };
+
         Field(const std::string& fileName);
 
         Coordinate getCenter();
@@ -21,6 +29,8 @@ class Field
 
         void dropView();
 
+        FieldStatus getStatus();
+
     private:
         // Using -2 so there is a gap between -2 and 0
         // and we can assert if the grid drops again
@@ -28,16 +38,20 @@ class Field
         enum Mine
         {
             mineEmptyCell = -2,
-            mineSameAsView = 0,
+            mineMissed = 0,
             mineClosest = 1, 
             mineFarthest = 52 
         };
 
-        friend std::string printView(const Coordinate& coordinate, const Field& field);
+        FieldStatus fieldStatus;
 
         std::vector<std::vector<int> > grid;
 
     private:
+        friend std::string printView(const Coordinate& coordinate, const Field& field);
+
         int mapDisplayCharToDepth(char value) const; 
         char mapDepthToDisplayChar(int value) const; 
+
+        void updateFieldStatus();
 };

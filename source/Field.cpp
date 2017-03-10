@@ -5,7 +5,8 @@
 #include <algorithm>
 #include <stdlib.h>
 
-Field::Field(const std::string& fileName)
+Field::Field(const std::string& fileName):
+    fieldStatus(fieldStatusNoMines)
 {
     std::string line;
     std::ifstream fieldFile(fileName);
@@ -24,6 +25,8 @@ Field::Field(const std::string& fileName)
         
         fieldFile.close();
     }
+
+    updateFieldStatus();
 }
 
 Coordinate Field::getCenter()
@@ -54,6 +57,13 @@ void Field::dropView()
             }
         }
     }
+
+    updateFieldStatus();
+}
+
+Field::FieldStatus Field::getStatus()
+{
+    return fieldStatus;
 }
 
 int Field::mapDisplayCharToDepth(char value) const
@@ -97,6 +107,35 @@ char Field::mapDepthToDisplayChar(int value) const
         std::cout << "mapDepthToDisplayChar: " << value << std::endl;
         assert(!value);
         return '*';
+    }
+}
+
+void Field::updateFieldStatus()
+{
+    fieldStatus = fieldStatusNoMines;
+
+    const int ySize = grid.size();
+    const int xSize = grid[0].size();
+    for(int y = 0; y < ySize; ++y)
+    {
+        if (fieldStatus == fieldStatusMineMissed)
+        {
+            break;
+        }
+
+        for(int x = 0; x < xSize; ++x)
+        {
+            if (grid[y][x] == mineMissed)
+            {
+                fieldStatus = fieldStatusMineMissed;
+                break;
+            }
+
+            if (grid[y][x] >= mineClosest && grid[y][x] <= mineFarthest)
+            {
+                fieldStatus = fieldStatusMined;
+            }
+        }
     }
 }
 
