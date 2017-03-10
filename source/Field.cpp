@@ -26,6 +26,15 @@ Field::Field(const std::string& fileName)
     }
 }
 
+Coordinate Field::getCenter()
+{
+    Coordinate temp;
+    temp.y = static_cast<int>(grid.size() / 2);
+    temp.x = static_cast<int>(grid[0].size() / 2);
+
+    return temp;
+}
+
 void Field::dropView()
 {
     const int ySize = grid.size();

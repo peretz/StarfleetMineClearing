@@ -15,7 +15,7 @@ class Field
     public:
         Field(const std::string& fileName);
 
-        Coordinate getMiddleCoordinate();
+        Coordinate getCenter();
 
         void dropView();
 

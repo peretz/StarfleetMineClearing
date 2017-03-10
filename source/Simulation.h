@@ -17,8 +17,6 @@ class Simulation
 
     private:
 
-        Coordinate Vessel;
-
         Field field;
         Script script;
 

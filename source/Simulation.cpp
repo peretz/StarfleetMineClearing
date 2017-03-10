@@ -15,7 +15,7 @@ Simulation::Simulation
 void Simulation::run()
 {
     int stepCount = 1;
-    Coordinate coordinate = {-1, 4};
+    Coordinate vessel = field.getCenter();
     std::queue<std::string> instr;
     while(!script.ended())
     {
@@ -24,7 +24,7 @@ void Simulation::run()
         std::cout << std::endl;
 
         // The current minefield
-        std::cout << printView(coordinate, field);
+        std::cout << printView(vessel, field);
         std::cout << std::endl;
 
         // The current instruction
@@ -38,7 +38,7 @@ void Simulation::run()
 
         // The resultant field
         field.dropView();
-        std::cout << printView(coordinate, field);
+        std::cout << printView(vessel, field);
         std::cout << std::endl;
 
         script.nextLine();
