@@ -47,13 +47,13 @@ void Field::dropView()
 {
     const int ySize = grid.size();
     const int xSize = grid[0].size();
-    for(int i = 0; i < ySize; ++i)
+    for(int y = 0; y < ySize; ++y)
     {
-        for(int j = 0; j < xSize; ++j)
+        for(int x = 0; x < xSize; ++x)
         {
-            if (grid[i][j] >= mineClosest)
+            if (grid[y][x] >= mineClosest && grid[y][x] <= mineFarthest)
             {
-               --grid[i][j];
+               --grid[y][x];
             }
         }
     }
@@ -104,8 +104,8 @@ char Field::mapDepthToDisplayChar(int value) const
     }
     else 
     {
-        std::cout << "mapDepthToDisplayChar: " << value << std::endl;
-        assert(!value);
+        // std::cout << "mapDepthToDisplayChar: " << value << std::endl;
+        assert(value == mineMissed);
         return '*';
     }
 }
@@ -151,7 +151,11 @@ std::string printView(const Coordinate& coordinate, const Field& field)
     {
         for(int x = 0; x < xSize; ++x)
         {
-            if (field.grid[y][x] >= Field::mineClosest)
+            if 
+            (
+                (field.grid[y][x] >= Field::mineClosest && field.grid[y][x] <= Field::mineFarthest) ||
+                (field.grid[y][x] == Field::mineMissed)
+            )
             {
                 const int tempX = abs(x - coordinate.x);
                 xMaxDelta = std::max(xMaxDelta, tempX);
