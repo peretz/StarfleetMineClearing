@@ -13,7 +13,7 @@ Once you have your Mac setup and Clang++ installed, just proceed to run 'make' i
 There are several examples provided in the fields and scripts directories which can be used as shown below:
 ./StarfleetMineClearing.out ./scripts/Exercise1.script ./fields/Exercise1.fields
 
-What is the program architecture?
+How is the program organized?
 
 The program uses three classes, Field, Script and Simulation, and a main.cpp file. The three classes leverage most of the logic for this implementation. Below, I cover their responsibilities.
 
