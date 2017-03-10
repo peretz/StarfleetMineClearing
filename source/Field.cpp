@@ -152,7 +152,41 @@ void Field::updateFieldStatus()
     }
 }
 
-// @TODO: Clean up method and document vector math used.
+// Vector math to transform the internal grid matrix to a vessel view.
+//
+// 1) We know the location of the ship (Xs, Yx) in terms of the origin (0,0).
+// Also, we know the location of each mine (Xmi, Ymi) in termos of the origin.
+// Given this relationship we can deduce the difference between the ship and
+// each mine (Xdelta, Ydelta) as:
+//
+// Xdelta = -Xs + Xmi
+// Ydelta = -Ys + Ymi
+//
+// 2) We are interested in the vessel being in the middle of its view. Because of this,
+// we need to iterate through each mine and find the largest absolute Xdelta and Ydelta
+// (xMaxDelta, yMaxDelta).
+//
+// xMaxDelta = max(abs(Xdeltai))
+// yMaxDelta = max(abs(Ydeltai))
+//
+// where Xdeltai is iterating through all X coordinates for the mines and Ydeltai is 
+// iterating through all Y coordinates.
+//
+// 3) To obtain the origin of the view (xViewOrigin, yViewOrigin) and the end point of the view
+// (xViewEnd, yViewEnd), we can use vector math and the (xMaxDelta, yMaxDelta) coordinate
+// we deduce in point 2).
+//
+// xViewOrigin = Xs - xMaxDelta
+// yViewOrigin = Ys - yMaxDelta
+//
+// xViewEnd = Xs + xMaxDelta
+// yViewEnd = Ys + yMaxDelta
+//
+// These last two coordinates represent the view from the perspective of the coordinate passed
+// to the printView() method, which can be outside the dimensions original set for the field
+// grid.
+//
+// @TODO: Clean up/refactor method.
 std::string printView(const Coordinate& coordinate, const Field& field)
 {
     int xMaxDelta = 0;
@@ -170,6 +204,9 @@ std::string printView(const Coordinate& coordinate, const Field& field)
                 (field.grid[y][x] == Field::mineMissed)
             )
             {
+                // Step 1 and 2: Obtain max distance so that all mines are in
+                // the coordinate view and the coordinate is still in the middle
+                // of the view.
                 const int tempX = abs(x - coordinate.x);
                 xMaxDelta = std::max(xMaxDelta, tempX);
 
@@ -179,6 +216,7 @@ std::string printView(const Coordinate& coordinate, const Field& field)
         }
     }
 
+    // Step 3: Computer coordinates to represent view.
     const int yViewOrigin = coordinate.y - yMaxDelta;
     const int xViewOrigin = coordinate.x - xMaxDelta;
     const int yViewEnd = coordinate.y + yMaxDelta;

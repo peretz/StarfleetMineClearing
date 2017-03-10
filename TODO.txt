@@ -6,5 +6,5 @@ This file lists several tasks that are still pending.
 -> Consider separting the Simulation class into two classes.
 -> Clean up @TODOs in the code.
 -> Document interfaces
--> Explain vector arithmetic used to transform the Vessel view into the grid space.
+-> Fixed flipped Y axis. The y axis substracts when going north, this is counterintuitive and an implementation detail from the Field class.
 
