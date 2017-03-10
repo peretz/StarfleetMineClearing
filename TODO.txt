@@ -7,4 +7,5 @@ This file lists several tasks that are still pending.
 -> Clean up @TODOs in the code.
 -> Document interfaces
 -> Fix flipped Y axis. The y axis substracts when going north, this is counterintuitive and an implementation detail from the Field class.
-
+-> Improve command line options and error handling.
+-> Consider moving the printView() method, which is currently a friend method, as a public method for the Field class. 
