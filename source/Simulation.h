@@ -21,7 +21,7 @@ class Simulation
         Script script;
 
     private:
-        void step();
+        void step(Coordinate& vessel);
 
 //        int score();
 };

@@ -1,6 +1,7 @@
 #include "Simulation.h"
 #include <iostream>
 #include <queue>
+#include <assert.h>
 
 Simulation::Simulation
 (
@@ -32,9 +33,7 @@ void Simulation::run()
         std::cout << std::endl;
 
         // @TODO: Add logic to update field
-        // Move vessel
-        // Shoot field
-        step();
+        step(vessel);
 
         // The resultant field
         field.dropView();
@@ -48,14 +47,45 @@ void Simulation::run()
     // Ouput pass/fail message
 }
 
-void Simulation::step()
+void Simulation::step(Coordinate& vessel)
 {
     std::queue<std::string> instructions = script.parseInstructions();
     
     while (!instructions.empty())
     {
-        std::string currentInstuction = instructions.front();
+        // @TODO: Add logic for convert characters to lower case.
+        std::string currentInstruction = instructions.front();
         instructions.pop();
+
+        if (currentInstruction == "north")
+        {
+            vessel.y--;
+        }
+        else if (currentInstruction == "south")
+        {
+            vessel.y++;
+        }
+        else if (currentInstruction == "east")
+        {
+            vessel.x--;
+        }
+        else if (currentInstruction == "west")
+        {
+            vessel.x++;
+        }
+        else if (currentInstruction == "alpha")
+        {
+        }
+        else if (currentInstruction == "beta")
+        {
+        }
+        else if (currentInstruction == "gamma")
+        {
+        }
+        else 
+        { 
+            assert(currentInstruction == "delta");
+        }
 
         //executeInstruction(currentInstuction);
     }
