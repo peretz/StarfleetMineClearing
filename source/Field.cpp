@@ -86,6 +86,7 @@ char Field::mapDepthToDisplayChar(int value) const
     }
 }
 
+// @TODO: Clean up method and document vector math used.
 std::string printView(const Coordinate& coordinate, const Field& field)
 {
     int xMaxDelta = 0;
