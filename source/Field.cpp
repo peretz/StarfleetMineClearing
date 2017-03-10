@@ -114,35 +114,23 @@ std::string printView(const Coordinate& coordinate, const Field& field)
     const int xViewEnd = coordinate.x + xMaxDelta;
 
     std::string os;
-    for(int i = yViewOrigin; i <= yViewEnd; ++i)
+    for(int y = yViewOrigin; y <= yViewEnd; ++y)
     {
-        for(int j = xViewOrigin; j <= xViewEnd; ++j)
+        // @TODO: Optimize inner loop so that if it is out of bounds
+        // you add all the '.' that are needed.
+        for(int x = xViewOrigin; x <= xViewEnd; ++x)
         {
-            if ((i < 0 || i >= ySize) || (j < 0 || j >= xSize))
+            if ((y < 0 || y >= ySize) || (x < 0 || x >= xSize))
             {
                 os += '.';
             }
             else
             {
-                os += field.mapDepthToDisplayChar(field.grid[i][j]); 
+                os += field.mapDepthToDisplayChar(field.grid[y][x]); 
             }
         }
         os += '\n';
     }
 
     return os;
-
-/*    std::string os;
-
-    const int ySize = field.grid.size();
-    const int xSize = field.grid[0].size();
-    for(int i = 0; i < ySize; ++i)
-    {
-        for(int j = 0; j < xSize; ++j)
-        {
-            os += field.mapDepthToDisplayChar(field.grid[i][j]);
-        }
-        os += '\n';
-    }
-    return os;*/
 }
