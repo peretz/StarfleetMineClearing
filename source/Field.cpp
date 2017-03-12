@@ -94,7 +94,7 @@ Field::FieldStatus Field::getStatus() const
 // can be outside the original dimensions set for the field grid.
 //
 // @TODO: Clean up/refactor method.
-std::string Field::getView(const Coordinate& coordinate) const
+std::string Field::getView(const Coordinate& center) const
 {
     int xMaxDelta = 0;
     int yMaxDelta = 0;
@@ -114,20 +114,20 @@ std::string Field::getView(const Coordinate& coordinate) const
                 // Step 1 and 2: Obtain max distance so that all mines are in
                 // the coordinate view and the coordinate is still in the middle
                 // of the view.
-                const int tempX = abs(x - coordinate.x);
+                const int tempX = abs(x - center.x);
                 xMaxDelta = std::max(xMaxDelta, tempX);
 
-                const int tempY = abs(y - coordinate.y);
+                const int tempY = abs(y - center.y);
                 yMaxDelta = std::max(yMaxDelta, tempY);
             }
         }
     }
 
     // Step 3: Computer coordinates to represent view.
-    const int yViewOrigin = coordinate.y - yMaxDelta;
-    const int xViewOrigin = coordinate.x - xMaxDelta;
-    const int yViewEnd = coordinate.y + yMaxDelta;
-    const int xViewEnd = coordinate.x + xMaxDelta;
+    const int yViewOrigin = center.y - yMaxDelta;
+    const int xViewOrigin = center.x - xMaxDelta;
+    const int yViewEnd = center.y + yMaxDelta;
+    const int xViewEnd = center.x + xMaxDelta;
 
     std::string os;
     for(int y = yViewOrigin; y <= yViewEnd; ++y)

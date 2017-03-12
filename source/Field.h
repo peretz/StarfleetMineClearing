@@ -39,15 +39,14 @@ class Field
             fieldStatusNoMines
         };
 
-        // Returns the status of your field. Check the enum FieldStatus
-        // for the valid status.
+        // Returns the status of your field.
         FieldStatus getStatus() const;
 
         // Returns a string with a squared view of the field using
         // the coordinate parameter as the center point of it.
         //
-        // The view is big enough to include all the mines in the field.
-        std::string getView(const Coordinate& coordinate) const;
+        // The view is large enough to include all the mines in the field.
+        std::string getView(const Coordinate& center) const;
 
         // Moves all mines one step closer to the viewer's perspective.
         void dropView();
@@ -73,6 +72,7 @@ class Field
     private:
 
         int mapDisplayCharToDepth(char value) const; 
+
         char mapDepthToDisplayChar(int value) const; 
 
         void updateFieldStatus();
