@@ -6,4 +6,4 @@ This file lists several tasks that are still pending.
 -> Consider separting the Simulation/Field class into two classes.
 -> Clean up @TODOs in the code.
 -> Fix flipped Y axis. The y axis substracts when going north, this is counterintuitive and an implementation detail from the Field class.
-
+-> Improve command line options and error handling.
