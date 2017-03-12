@@ -61,8 +61,8 @@ Field::FieldStatus Field::getStatus() const
 
 // Vector math to transform the internal grid matrix to a vessel view.
 //
-// 1) We know the location of the ship (Xs, Yx) in terms of the origin (0,0).
-// Also, we know the location of each mine (Xmi, Ymi) in termos of the origin.
+// 1) We know the location of the ship (Xs, Ys) in terms of the origin (0,0).
+// Also, we know the location of each mine (Xmi, Ymi) in terms of the origin.
 // Given this relationship we can deduce the difference between the ship and
 // each mine (Xdelta, Ydelta) as:
 //
@@ -79,9 +79,9 @@ Field::FieldStatus Field::getStatus() const
 // where Xdeltai is iterating through all X coordinates for the mines and Ydeltai is 
 // iterating through all Y coordinates.
 //
-// 3) To obtain the origin of the view (xViewOrigin, yViewOrigin) and the end point of the view
-// (xViewEnd, yViewEnd), we can use vector math and the (xMaxDelta, yMaxDelta) coordinate
-// we deduce in point 2).
+// 3) To obtain the origin of the view (xViewOrigin, yViewOrigin) and the end point of
+// the view (xViewEnd, yViewEnd), we can use vector math and the (xMaxDelta, yMaxDelta)
+// coordinate we deduce in point 2).
 //
 // xViewOrigin = Xs - xMaxDelta
 // yViewOrigin = Ys - yMaxDelta
@@ -89,9 +89,9 @@ Field::FieldStatus Field::getStatus() const
 // xViewEnd = Xs + xMaxDelta
 // yViewEnd = Ys + yMaxDelta
 //
-// These last two coordinates represent the view from the perspective of the coordinate passed
-// to the printView() method, which can be outside the dimensions original set for the field
-// grid.
+// These last two coordinates represent the view of your grid. The view is using the 
+// coordinate passed to the getView(coordinate) method as reference point and the view
+// can be outside the original dimensions set for the field grid.
 //
 // @TODO: Clean up/refactor method.
 std::string Field::getView(const Coordinate& coordinate) const
