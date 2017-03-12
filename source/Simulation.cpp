@@ -30,7 +30,7 @@ void Simulation::run()
         std::cout << std::endl;
 
         // The current minefield
-        std::cout << printView(vessel, field);
+        std::cout << field.getView(vessel);
         std::cout << std::endl;
 
         // The current instruction
@@ -41,7 +41,7 @@ void Simulation::run()
         step(vessel);
 
         // The resultant field
-        std::cout << printView(vessel, field);
+        std::cout << field.getView(vessel);
         std::cout << std::endl;
         
         script.nextLine();

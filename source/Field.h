@@ -23,15 +23,17 @@ class Field
 
         Field(const std::string& fileName);
 
-        Coordinate getCenter();
+        Coordinate getCenter() const;
 
-        int getNumberOfMines();
+        int getNumberOfMines() const;
+
+        FieldStatus getStatus() const;
+
+        std::string getView(const Coordinate& coordinate) const;
 
         void clearCoordinate(int x, int y);
 
         void dropView();
-
-        FieldStatus getStatus();
 
     private:
         // Using -2 so there is a gap between -2 and 0
@@ -45,13 +47,12 @@ class Field
             mineFarthest = 52 
         };
 
-        FieldStatus fieldStatus;
         int numberOfMines;
+        FieldStatus fieldStatus;
 
         std::vector<std::vector<int> > grid;
 
     private:
-        friend std::string printView(const Coordinate& coordinate, const Field& field);
 
         int mapDisplayCharToDepth(char value) const; 
         char mapDepthToDisplayChar(int value) const; 

@@ -30,7 +30,7 @@ Field::Field(const std::string& fileName):
     updateFieldStatus();
 }
 
-Coordinate Field::getCenter()
+Coordinate Field::getCenter() const
 {
     Coordinate temp;
     temp.y = static_cast<int>(grid.size() / 2);
@@ -39,9 +39,106 @@ Coordinate Field::getCenter()
     return temp;
 }
 
-int Field::getNumberOfMines()
+int Field::getNumberOfMines() const
 {
     return numberOfMines;
+}
+
+Field::FieldStatus Field::getStatus() const
+{
+    return fieldStatus;
+}
+
+// Vector math to transform the internal grid matrix to a vessel view.
+//
+// 1) We know the location of the ship (Xs, Yx) in terms of the origin (0,0).
+// Also, we know the location of each mine (Xmi, Ymi) in termos of the origin.
+// Given this relationship we can deduce the difference between the ship and
+// each mine (Xdelta, Ydelta) as:
+//
+// Xdelta = -Xs + Xmi
+// Ydelta = -Ys + Ymi
+//
+// 2) We are interested in the vessel being in the middle of its view. Because of this,
+// we need to iterate through each mine and find the largest absolute Xdelta and Ydelta
+// (xMaxDelta, yMaxDelta).
+//
+// xMaxDelta = max(abs(Xdeltai))
+// yMaxDelta = max(abs(Ydeltai))
+//
+// where Xdeltai is iterating through all X coordinates for the mines and Ydeltai is 
+// iterating through all Y coordinates.
+//
+// 3) To obtain the origin of the view (xViewOrigin, yViewOrigin) and the end point of the view
+// (xViewEnd, yViewEnd), we can use vector math and the (xMaxDelta, yMaxDelta) coordinate
+// we deduce in point 2).
+//
+// xViewOrigin = Xs - xMaxDelta
+// yViewOrigin = Ys - yMaxDelta
+//
+// xViewEnd = Xs + xMaxDelta
+// yViewEnd = Ys + yMaxDelta
+//
+// These last two coordinates represent the view from the perspective of the coordinate passed
+// to the printView() method, which can be outside the dimensions original set for the field
+// grid.
+//
+// @TODO: Clean up/refactor method.
+std::string Field::getView(const Coordinate& coordinate) const
+{
+    int xMaxDelta = 0;
+    int yMaxDelta = 0;
+
+    const int ySize = grid.size();
+    const int xSize = grid[0].size();
+    for(int y = 0; y < ySize; ++y)
+    {
+        for(int x = 0; x < xSize; ++x)
+        {
+            if 
+            (
+                (grid[y][x] >= mineClosest && grid[y][x] <= mineFarthest) ||
+                (grid[y][x] == mineMissed)
+            )
+            {
+                // Step 1 and 2: Obtain max distance so that all mines are in
+                // the coordinate view and the coordinate is still in the middle
+                // of the view.
+                const int tempX = abs(x - coordinate.x);
+                xMaxDelta = std::max(xMaxDelta, tempX);
+
+                const int tempY = abs(y - coordinate.y);
+                yMaxDelta = std::max(yMaxDelta, tempY);
+            }
+        }
+    }
+
+    // Step 3: Computer coordinates to represent view.
+    const int yViewOrigin = coordinate.y - yMaxDelta;
+    const int xViewOrigin = coordinate.x - xMaxDelta;
+    const int yViewEnd = coordinate.y + yMaxDelta;
+    const int xViewEnd = coordinate.x + xMaxDelta;
+
+    std::string os;
+    for(int y = yViewOrigin; y <= yViewEnd; ++y)
+    {
+        // @TODO: Optimize inner loop so that if it is out of bounds
+        // you add all the '.' that are needed.
+        for(int x = xViewOrigin; x <= xViewEnd; ++x)
+        {
+            if ((y < 0 || y >= ySize) || (x < 0 || x >= xSize))
+            {
+                os += '.';
+            }
+            else
+            {
+                os += mapDepthToDisplayChar(grid[y][x]); 
+            }
+        }
+        os += '\n';
+    }
+
+    return os;
 }
 
 void Field::clearCoordinate(int x, int y)
@@ -70,11 +167,6 @@ void Field::dropView()
     }
 
     updateFieldStatus();
-}
-
-Field::FieldStatus Field::getStatus()
-{
-    return fieldStatus;
 }
 
 int Field::mapDisplayCharToDepth(char value) const
@@ -150,96 +242,4 @@ void Field::updateFieldStatus()
             }
         }
     }
-}
-
-// Vector math to transform the internal grid matrix to a vessel view.
-//
-// 1) We know the location of the ship (Xs, Yx) in terms of the origin (0,0).
-// Also, we know the location of each mine (Xmi, Ymi) in termos of the origin.
-// Given this relationship we can deduce the difference between the ship and
-// each mine (Xdelta, Ydelta) as:
-//
-// Xdelta = -Xs + Xmi
-// Ydelta = -Ys + Ymi
-//
-// 2) We are interested in the vessel being in the middle of its view. Because of this,
-// we need to iterate through each mine and find the largest absolute Xdelta and Ydelta
-// (xMaxDelta, yMaxDelta).
-//
-// xMaxDelta = max(abs(Xdeltai))
-// yMaxDelta = max(abs(Ydeltai))
-//
-// where Xdeltai is iterating through all X coordinates for the mines and Ydeltai is 
-// iterating through all Y coordinates.
-//
-// 3) To obtain the origin of the view (xViewOrigin, yViewOrigin) and the end point of the view
-// (xViewEnd, yViewEnd), we can use vector math and the (xMaxDelta, yMaxDelta) coordinate
-// we deduce in point 2).
-//
-// xViewOrigin = Xs - xMaxDelta
-// yViewOrigin = Ys - yMaxDelta
-//
-// xViewEnd = Xs + xMaxDelta
-// yViewEnd = Ys + yMaxDelta
-//
-// These last two coordinates represent the view from the perspective of the coordinate passed
-// to the printView() method, which can be outside the dimensions original set for the field
-// grid.
-//
-// @TODO: Clean up/refactor method.
-std::string printView(const Coordinate& coordinate, const Field& field)
-{
-    int xMaxDelta = 0;
-    int yMaxDelta = 0;
-
-    const int ySize = field.grid.size();
-    const int xSize = field.grid[0].size();
-    for(int y = 0; y < ySize; ++y)
-    {
-        for(int x = 0; x < xSize; ++x)
-        {
-            if 
-            (
-                (field.grid[y][x] >= Field::mineClosest && field.grid[y][x] <= Field::mineFarthest) ||
-                (field.grid[y][x] == Field::mineMissed)
-            )
-            {
-                // Step 1 and 2: Obtain max distance so that all mines are in
-                // the coordinate view and the coordinate is still in the middle
-                // of the view.
-                const int tempX = abs(x - coordinate.x);
-                xMaxDelta = std::max(xMaxDelta, tempX);
-
-                const int tempY = abs(y - coordinate.y);
-                yMaxDelta = std::max(yMaxDelta, tempY);
-            }
-        }
-    }
-
-    // Step 3: Computer coordinates to represent view.
-    const int yViewOrigin = coordinate.y - yMaxDelta;
-    const int xViewOrigin = coordinate.x - xMaxDelta;
-    const int yViewEnd = coordinate.y + yMaxDelta;
-    const int xViewEnd = coordinate.x + xMaxDelta;
-
-    std::string os;
-    for(int y = yViewOrigin; y <= yViewEnd; ++y)
-    {
-        // @TODO: Optimize inner loop so that if it is out of bounds
-        // you add all the '.' that are needed.
-        for(int x = xViewOrigin; x <= xViewEnd; ++x)
-        {
-            if ((y < 0 || y >= ySize) || (x < 0 || x >= xSize))
-            {
-                os += '.';
-            }
-            else
-            {
-                os += field.mapDepthToDisplayChar(field.grid[y][x]); 
-            }
-        }
-        os += '\n';
-    }
-
-    return os;
 }
