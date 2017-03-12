@@ -17,12 +17,12 @@ Script::Script(const std::string& fileName)
     }
 }
 
-std::string Script::getLine()
+std::string Script::getLine() const
 {
     return lineQueue.front();
 }
 
-std::queue<std::string> Script::parseInstructions()
+std::queue<std::string> Script::parseInstructions() const
 {
     std::string activeLine = lineQueue.front();
 

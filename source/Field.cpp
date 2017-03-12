@@ -141,7 +141,7 @@ std::string Field::getView(const Coordinate& coordinate) const
     return os;
 }
 
-void Field::clearCoordinate(int x, int y)
+void Field::clearMine(int x, int y)
 {
     const int ySize = grid.size();
     const int xSize = grid[0].size();

@@ -1,3 +1,8 @@
+/*
+    This class allows you to load, manipulate and access the mines in
+    the *.field file.
+*/
+
 #pragma once
 
 #include <string>
@@ -14,6 +19,16 @@ class Field
 {
     public:
         
+        Field(const std::string& fileName);
+
+        // Returns the center coordinate of your field. This center
+        // coordinate is based on the sizes of your field at
+        // initialization.
+        Coordinate getCenter() const;
+
+        // Returns the total number of active mines in the field.
+        int getNumberOfMines() const;
+
         enum FieldStatus
         {
             fieldStatusMined,
@@ -21,21 +36,26 @@ class Field
             fieldStatusNoMines
         };
 
-        Field(const std::string& fileName);
-
-        Coordinate getCenter() const;
-
-        int getNumberOfMines() const;
-
+        // Returns the status of your field. Check the enum for the 
+        // valid status.
         FieldStatus getStatus() const;
 
+        // Returns a string with a squared view of the field using
+        // the coordinate parameter as the center point of it. The
+        // view can be outside the bounds of the field.
         std::string getView(const Coordinate& coordinate) const;
 
-        void clearCoordinate(int x, int y);
+        // Clears a mine in the specific (x, y) coordinate.
+        void clearMine(int x, int y);
 
+        // Moves all mines one step closer to the viewer's perspective.
         void dropView();
 
     private:
+
+        int numberOfMines;
+        FieldStatus fieldStatus;
+
         // Using -2 so there is a gap between -2 and 0
         // and we can assert if the grid drops again
         // after reaching the same level.
@@ -46,9 +66,6 @@ class Field
             mineClosest = 1, 
             mineFarthest = 52 
         };
-
-        int numberOfMines;
-        FieldStatus fieldStatus;
 
         std::vector<std::vector<int> > grid;
 

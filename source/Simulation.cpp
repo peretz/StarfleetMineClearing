@@ -84,27 +84,27 @@ void Simulation::step(Coordinate& vessel)
         else if (currentInstruction == "alpha")
         {
             // (-1, -1), (-1, 1), (1, -1), (1, 1)
-            field.clearCoordinate(vessel.x-1, vessel.y+1);
-            field.clearCoordinate(vessel.x-1, vessel.y-1);
-            field.clearCoordinate(vessel.x+1, vessel.y+1);
-            field.clearCoordinate(vessel.x+1, vessel.y-1);
+            field.clearMine(vessel.x-1, vessel.y+1);
+            field.clearMine(vessel.x-1, vessel.y-1);
+            field.clearMine(vessel.x+1, vessel.y+1);
+            field.clearMine(vessel.x+1, vessel.y-1);
             numberOfVolleysFired++;
         }
         else if (currentInstruction == "beta")
         {
             // (-1, 0), (0, -1), (0, 1), (1, 0)
-            field.clearCoordinate(vessel.x-1, vessel.y);
-            field.clearCoordinate(vessel.x, vessel.y+1);
-            field.clearCoordinate(vessel.x, vessel.y-1);
-            field.clearCoordinate(vessel.x+1, vessel.y);
+            field.clearMine(vessel.x-1, vessel.y);
+            field.clearMine(vessel.x, vessel.y+1);
+            field.clearMine(vessel.x, vessel.y-1);
+            field.clearMine(vessel.x+1, vessel.y);
             numberOfVolleysFired++;
         }
         else if (currentInstruction == "gamma")
         {
             // (-1, 0), (0, 0), (1, 0)
-            field.clearCoordinate(vessel.x-1, vessel.y);
-            field.clearCoordinate(vessel.x, vessel.y);
-            field.clearCoordinate(vessel.x+1, vessel.y);
+            field.clearMine(vessel.x-1, vessel.y);
+            field.clearMine(vessel.x, vessel.y);
+            field.clearMine(vessel.x+1, vessel.y);
             numberOfVolleysFired++;
         }
         else 
@@ -112,9 +112,9 @@ void Simulation::step(Coordinate& vessel)
             assert(currentInstruction == "delta");
 
             // (0, -1), (0, 0), (0, 1)
-            field.clearCoordinate(vessel.x, vessel.y+1);
-            field.clearCoordinate(vessel.x, vessel.y);
-            field.clearCoordinate(vessel.x, vessel.y-1);
+            field.clearMine(vessel.x, vessel.y+1);
+            field.clearMine(vessel.x, vessel.y);
+            field.clearMine(vessel.x, vessel.y-1);
             numberOfVolleysFired++;
         }
     }
