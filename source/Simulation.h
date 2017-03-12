@@ -1,10 +1,8 @@
 /*
     This class is in charge of receiving two files, a field file and a
-    script file, and using these two files it runs a simulation of the 
-    program.
+    script file, and run a simulation.
 
-    Also, this class is in charge of printing the results of running the
-    simulation.
+    Also, this class prints the results of running the simulation.
 */
 
 #pragma once
@@ -22,6 +20,7 @@ class Simulation
             const std::string& scriptFileName
         );
 
+        // Runs each step of the simulation and prints them.
         void run();
 
     private:

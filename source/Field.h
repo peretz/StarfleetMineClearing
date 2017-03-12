@@ -29,6 +29,9 @@ class Field
         // Returns the total number of active mines in the field.
         int getNumberOfMines() const;
 
+        // Clears a mine in the specific (x, y) coordinate.
+        void clearMine(int x, int y);
+
         enum FieldStatus
         {
             fieldStatusMined,
@@ -36,17 +39,15 @@ class Field
             fieldStatusNoMines
         };
 
-        // Returns the status of your field. Check the enum for the 
-        // valid status.
+        // Returns the status of your field. Check the enum FieldStatus
+        // for the valid status.
         FieldStatus getStatus() const;
 
         // Returns a string with a squared view of the field using
-        // the coordinate parameter as the center point of it. The
-        // view can be outside the bounds of the field.
+        // the coordinate parameter as the center point of it.
+        //
+        // The view is big enough to include all the mines in the field.
         std::string getView(const Coordinate& coordinate) const;
-
-        // Clears a mine in the specific (x, y) coordinate.
-        void clearMine(int x, int y);
 
         // Moves all mines one step closer to the viewer's perspective.
         void dropView();

@@ -1,8 +1,7 @@
 /*
     This class allows you to load, control and access the instructions in
-    the *.script file. Accessing the instructions is done in a line
-    basis, but you can go futher an parse the instructions within
-    that line.
+    the *.script file. Accessing the instructions is done in a line or
+    instruction basis.
 */
 
 #pragma once
@@ -25,7 +24,7 @@ class Script
         // it will move to the next line.
         void nextLine();
 
-        // Check if the script has completed.
+        // Checks if the script has completed.
         bool ended();
 
     private:

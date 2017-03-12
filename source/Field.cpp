@@ -44,6 +44,16 @@ int Field::getNumberOfMines() const
     return numberOfMines;
 }
 
+void Field::clearMine(int x, int y)
+{
+    const int ySize = grid.size();
+    const int xSize = grid[0].size();
+    if ((y >= 0 && y < ySize) && (x >= 0 && x < xSize))
+    {
+        grid[y][x] = mapDisplayCharToDepth('.');
+    }
+}
+
 Field::FieldStatus Field::getStatus() const
 {
     return fieldStatus;
@@ -139,16 +149,6 @@ std::string Field::getView(const Coordinate& coordinate) const
     }
 
     return os;
-}
-
-void Field::clearMine(int x, int y)
-{
-    const int ySize = grid.size();
-    const int xSize = grid[0].size();
-    if ((y >= 0 && y < ySize) && (x >= 0 && x < xSize))
-    {
-        grid[y][x] = mapDisplayCharToDepth('.');
-    }
 }
 
 void Field::dropView()
